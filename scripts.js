@@ -1,6 +1,4 @@
-const display = document.querySelector(".display");
-console.log("Display element:", display);
-display.textContent = "123"; // Should show up immediately in the UI
+
 
 //operator functions
 function add(a, b){
@@ -84,7 +82,7 @@ function log(message){
     console.log(message);
 }
 
-
+const display = document.querySelector(".display");
 let leftNum = undefined, rightNum = undefined, operator = undefined, result = undefined, multipleOperatorExists = false;
 
 
