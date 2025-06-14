@@ -100,4 +100,31 @@ numericKeys.forEach(button => {
     });
 });
 
-const operatorKeys = document.querySelectorAll()
+const operatorKeys = document.querySelectorAll("button.operatorKeys")
+operatorKeys.forEach(button => {
+    button.addEventListener('click', () => {
+        //case 1 + 
+        if (leftNum === undefined && operator === undefined && display.textContent !== '') {
+            leftNum = parseFloat(display.textContent);
+            operator = button.textContent;
+            clearDisplay();
+            //case 1 + 2 + 
+        } else if (leftNum !== undefined && operator !== undefined && display.textContent != '' && !multipleOperatorExists) {
+            multipleOperatorExists = true;
+            result = getResult();
+            clearDisplay(); 
+            //display result 
+            displayText(String(result));
+            leftNum = result;
+            operator = button.textContent;
+        } else if (leftNum !== undefined && operator !== undefined && (parseFloat(display.textContent) == result || display.textContent == '')) {
+                    //case operand operator 1 + -
+                    operator = button.textContent;
+        }
+    });
+});
+
+const equalsKey = document.querySelector("#equals");
+equalsKey.addEventListener('click', () => {
+    
+})
