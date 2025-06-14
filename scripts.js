@@ -1,6 +1,6 @@
-//initialize variables to help with accurate calculations and display
-let leftNum, rightNum, operator, result, multipleOperatorExists = false;
 const display = document.querySelector(".display");
+console.log("Display element:", display);
+display.textContent = "123"; // Should show up immediately in the UI
 
 //operator functions
 function add(a, b){
@@ -52,12 +52,12 @@ function operate(operator, leftNum, rightNum) {
 
 //display text
 function displayText(text){
-    if (displayText.length <= 13) {
+    if (display.textContent.length <= 13) {
         display.textContent += text; 
     } else {
         display.textContent = Number.parseFloat(text).toExponential(3);
     }
-} resetValues();
+} 
 
 //clear display function
 function clearDisplay() {
@@ -66,8 +66,8 @@ function clearDisplay() {
 
 //clear values
 function resetValues() {
-    leftNum = 0;
-    rightNum = 0;
+    leftNum = undefined;
+    rightNum = undefined;
     operator = undefined;
     isFloat = false; 
     multipleOperatorExists = false;
@@ -85,7 +85,10 @@ function log(message){
 }
 
 
-const numericKeys = document.querySelectorAll("button.numeric"); 
+let leftNum = undefined, rightNum = undefined, operator = undefined, result = undefined, multipleOperatorExists = false;
+
+
+const numericKeys = document.querySelectorAll("button.numericKeys"); 
 numericKeys.forEach(button => {
     button.addEventListener('click', () => {
         //if display has 0 need to remove it
@@ -100,7 +103,7 @@ numericKeys.forEach(button => {
     });
 });
 
-const operatorKeys = document.querySelectorAll("button.operatorKeys")
+const operatorKeys = document.querySelectorAll("button.operatorKeys");
 operatorKeys.forEach(button => {
     button.addEventListener('click', () => {
         //case 1 + 
@@ -126,5 +129,101 @@ operatorKeys.forEach(button => {
 
 const equalsKey = document.querySelector("#equals");
 equalsKey.addEventListener('click', () => {
-    
+    if (leftNum !== undefined && operator !== undefined && display.textContent != ''){
+        result = getResult();
+        clearDisplay(); 
+        displayText(String(result));
+        resetValues();
+    }
+});
+
+const clearKey = document.querySelector("#clear");
+clearKey.addEventListener('click', () => {
+    clearDisplay();
+    resetValues();
+});
+
+const decimalKey = document.querySelector("#decimal");
+decimalKey.addEventListener('click', () => {
+    if (!display.textContent.includes('.')) {
+        if (display.textContent === '' || multipleOperatorExists) {
+            clearDisplay();
+            displayText("0.");
+        } else {
+            displayText(decimalKey.textContent);
+        }
+    }
+});
+
+const deleteKey = document.querySelector("#delete");
+deleteKey.addEventListener('click', () => {
+    if (display.textContent !== '') {
+        display.textContent = display.textContent.slice(0, -1);
+    }
+});
+
+let clickEvent = new MouseEvent('click', {
+    bubbles: true,
+    cancelable: true
+});
+
+window.addEventListener('keydown', function(e) {
+    let btn; 
+    switch (e.key) {
+        case "0":
+            btn = this.document.querySelector('#zero');
+            break;
+        case "1":
+            btn = this.document.querySelector("#one");
+            break;
+        case "2":
+            btn = this.document.querySelector('#two');
+            break;
+        case "3":
+            btn = this.document.querySelector('#three');
+            break;
+        case "4":
+            btn = this.document.querySelector("#four");
+            break;
+        case "5":
+            btn = this.document.querySelector('#five');
+            break;
+        case "6":
+            btn = this.document.querySelector('#six');
+            break;
+        case "7":
+            btn = this.document.querySelector('#seven');
+            break;
+        case "8":
+            btn = this.document.querySelector('#eight');
+            break;
+        case "9":
+            btn = this.document.querySelector('#nine');
+            break;
+        case "+":
+            btn = this.document.querySelector('#add');
+            break;
+        case "-":
+            btn = this.document.querySelector('#subtract');
+            break;
+        case "*":
+            btn = this.document.querySelector('#multiply');
+            break;
+        case "/":
+            btn = this.document.querySelector('#divide');
+            break;
+        case "=":
+        case "Enter":
+            btn = this.document.querySelector('#equals');
+            break;
+        case "Backspace":
+            btn = this.document.querySelector('#delete');
+            break;
+        case ".":
+            btn = this.document.querySelector('#decimal');
+            break;
+    }
+    if (btn) {
+        btn.dispatchEvent(clickEvent);
+    }
 })
